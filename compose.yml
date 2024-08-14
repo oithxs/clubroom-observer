@@ -1,0 +1,9 @@
+services:
+  mac:
+    container_name: python-getMac
+    build:
+      context: ./Mac
+      dockerfile: ./dockerfile
+    volumes:
+      - ./Mac:/usr/src/app
+    tty: true
