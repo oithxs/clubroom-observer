@@ -2,13 +2,15 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import config
 
+#初期設定
 options = webdriver.ChromeOptions()
 options.add_argument("--force-device-scale-factor=0.5")
-options.add_argument("--headless=new")
+# options.add_argument("--headless=new")
 driver = webdriver.Chrome(options=options)
 driver.maximize_window()
 driver.implicitly_wait(5)
 
+#TP-Linkのルータ管理画面に移動
 driver.get(config.TPLINK_URL)
 
 #ログイン処理
