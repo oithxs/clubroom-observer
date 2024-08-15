@@ -1,1 +1,4 @@
-scapy==2.5.0
+selenium
+jupyter
+requests
+BeautifulSoup4
