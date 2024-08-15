@@ -33,7 +33,7 @@ def get_macaddress():
             pass
         finally:
             #MACアドレスを取得
-            # driver.find_element(By.ID, value="map_wireless").click()
+            # driver.find_element(By.ID, value="map_wireless").click() # 本番はこっちを使う
             driver.find_element(By.ID, value="map_wire").click()
             time.sleep(2)
             macaddrs = driver.find_elements(by=By.XPATH, value="//*[@id='bodyWireStat']/tr/td[4]")
