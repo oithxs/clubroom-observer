@@ -27,9 +27,15 @@ def add_user(mac_addr,dis_user_id):
 def search_user(mac_addr):
     con=sqlite3.connect(DATABASE)
     cur=con.cursor()
-    D_userdata=cur.execute("SELECT * FROM userdata WHERE MAC_ADDRESS = ?",(mac_addr,)).fetchall()
-    con.close()
-    return D_userdata[0][1]
+    try:
+        D_userdata=cur.execute("SELECT * FROM userdata WHERE MAC_ADDRESS = ?",(mac_addr,)).fetchall()
+        return D_userdata[0][1]
+    except IndexError:
+        return None
+    finally:
+        con.close()
+
+
 
 
 def delete_db():
@@ -56,7 +62,7 @@ if __name__ == "__main__":
     create_DB()
     add_user("xxx.xxx","XXXX")
     add_user("000.000","0000")
-    data = search_user(mac_addr="000.000")
+    data = search_user(mac_addr="000.111")
     list_tables_and_contents()
     delete_db()
     print(end="\n\n")
