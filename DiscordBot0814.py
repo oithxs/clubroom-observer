@@ -3,6 +3,10 @@ from discord.ext import commands
 import os
 from dotenv import load_dotenv
 import asyncio
+import sqlite3
+import datetime
+import pytz
+
 #環境変数の用意
 load_dotenv() # .envファイルの読み込み
 TOKEN = os.getenv("TOKEN")
@@ -14,6 +18,27 @@ intents = discord.Intents.default()
 intents.members = True
 client = discord.Client(intents=intents)
 
+#SQLLiteデータベース関連の情報
+
+jst = pytz.timezone('Asia/Tokyo')
+
+# ClubRecoder.dbを作成する
+# すでに存在していれば、それにアスセスする。
+dbname = 'ClubRecoder.db'
+
+#ログの書き込み
+async def db_log_insert(name, status):
+    conn = sqlite3.connect(dbname)
+    # sqliteを操作するカーソルオブジェクトを作成
+    cur = conn.cursor()
+    now = datetime.datetime.now(jst)
+    str_now = now.strftime('%Y-%m-%d %H:%M:%S')
+    cur.execute("INSERT INTO Log(Name, Status, Date) values(?, ?, ?);", (name, status, str_now))
+    # データベースへコミット。これで変更が反映される。
+    conn.commit()
+    # データベースへのコネクションを閉じる。(必須)
+    conn.close()
+
 # Botの起動時に実行される処理
 @client.event
 async def on_ready():
@@ -24,7 +49,7 @@ async def on_ready():
     for individual in mes:
         #print(individual.name)
         role = guild.get_role(ROLE_ID)
-        print(f"REMOVE_ROLE>>{individual}")
+        print(f"REMOVE_ROLE>>{individual.nick}")
         await individual.remove_roles(role)
 
     while True:
@@ -39,7 +64,8 @@ async def on_ready():
                     #print(individual.name)
                     if(individual.name==username):
                         role = guild.get_role(ROLE_ID)
-                        print(f"ADD_ROLE>>{username}")
+                        print(f"ADD_ROLE>>{individual.nick}")
+                        await db_log_insert(individual.nick,"入室")
                         await individual.add_roles(role)
             
             #退室
@@ -52,7 +78,8 @@ async def on_ready():
                     #print(individual.name)
                     if(individual.name==username):
                         role = guild.get_role(ROLE_ID)
-                        print(f"REMOVE_ROLE>>{username}")
+                        print(f"REMOVE_ROLE>>{individual.nick}")
+                        await db_log_insert(individual.nick,"退出")
                         await individual.remove_roles(role)
                 
             
