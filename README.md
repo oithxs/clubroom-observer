@@ -16,4 +16,6 @@ sh dockUp
 ```
 python main.py
 ```
+./Mac/.envに環境変数を書き込み
+実行前にTABLE_URLとTABLE_PASSを書き入れてから
 
