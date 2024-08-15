@@ -18,7 +18,8 @@ def add_user(mac_addr,dis_user_id):
     cur.execute("SELECT * FROM userdata WHERE MAC_ADDRESS = ?",(mac_addr,))
     exit_dis_id=cur.fetchall()
     if exit_dis_id:
-        print("このmacaddressは既に登録されています。")
+        print(f"このMac_Addressは既に登録されています。\nmac : {mac_addr}\ndis : {dis_user_id}")
+
         return
     cur.execute("INSERT INTO userdata (MAC_ADDRESS, discord_user_ID) VALUES (?, ?)",(mac_addr,dis_user_id))
     con.commit()
@@ -56,6 +57,8 @@ if __name__ == "__main__":
     create_DB()
     add_user("xxx.xxx","XXXX")
     add_user("000.000","0000")
+    add_user("000.000","1111")
+    add_user("111.111","0000")
     data = search_user(mac_addr="000.000")
     list_tables_and_contents()
     delete_db()
