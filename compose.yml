@@ -7,7 +7,7 @@ services:
     volumes:
       - ./Mac:/usr/src/app
     env_file:
-      - ./Mac/env
+      - ./Mac/.env
     tty: true
   selenium:
     container_name: selenium-chrome
