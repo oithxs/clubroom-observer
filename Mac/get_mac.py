@@ -4,11 +4,7 @@ from selenium.common.exceptions import WebDriverException
 import os
 import time
 
-url = "http://150.89.253.11/"
-tplink_passwd = "takakun"
-
 options = webdriver.ChromeOptions()
-# options.add_argument("--force-device-scale-factor=0.5")
 driver = webdriver.Remote(
     command_executor = os.environ["SELENIUM_URL"],
     options = options
@@ -17,7 +13,7 @@ driver = webdriver.Remote(
 driver.implicitly_wait(5)
 
 try:
-    driver.get(url)
+    driver.get(os.environ["TABLE_URL"])
 
 except WebDriverException:
     driver.close()
@@ -26,7 +22,7 @@ except WebDriverException:
 else:
     text_box = driver.find_element(by=By.ID, value="pc-login-password")
     button = driver.find_element(By.ID, value="pc-login-btn")
-    text_box.send_keys(tplink_passwd)
+    text_box.send_keys(os.environ["TABLE_PASS"])
     button.click()
 
     #MACアドレスを取得
