@@ -1,5 +1,4 @@
 selenium
-jupyter
 requests
 BeautifulSoup4
 sqlite3
