@@ -20,6 +20,13 @@ async def on_ready():
     print(f'Logged in as {client.user.name}')
     guild = client.get_guild(GUILD_ID)
     mes = guild.members
+    #全員にロール削除
+    for individual in mes:
+        #print(individual.name)
+        role = guild.get_role(ROLE_ID)
+        print(f"REMOVE_ROLE>>{individual}")
+        await individual.remove_roles(role)
+
     while True:
         try:
             #入室
