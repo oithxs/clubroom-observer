@@ -3,11 +3,11 @@ services:
     container_name: python-getMac
     build:
       context: ./Mac
-      dockerfile: ./dockerfile
+      dockerfile: dockerfile
     volumes:
       - ./Mac:/usr/src/app
-    environment:
-      SELENIUM_URL: http://selenium:4444/wd/hub
+    env_file:
+      - ./Mac/.env
     tty: true
   selenium:
     container_name: selenium-chrome
