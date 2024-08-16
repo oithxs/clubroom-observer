@@ -1,0 +1,7 @@
+selenium
+requests
+BeautifulSoup4
+pysqlite3
+python-dotenv
+discord.py
+pytz

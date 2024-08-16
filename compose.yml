@@ -1,0 +1,20 @@
+services:
+  mac:
+    container_name: python-getMac
+    build:
+      context: ./Mac
+      dockerfile: dockerfile
+    volumes:
+      - ./Mac:/usr/src/app
+    env_file:
+      - ./Mac/.env
+    tty: true
+  selenium:
+    container_name: selenium-chrome
+    image: selenium/standalone-chrome:4.1.4-20220427
+    ports:
+      - 4444:4444
+      - 7900:7900
+    volumes:
+      - /dev/shm:/dev/shm
+  
