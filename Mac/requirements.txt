@@ -1,4 +1,7 @@
 selenium
 requests
 BeautifulSoup4
-sqlite3
+pysqlite3
+python-dotenv
+discord.py
+pytz
