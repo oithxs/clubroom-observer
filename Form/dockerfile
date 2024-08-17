@@ -1,0 +1,5 @@
+FROM python:3.9
+WORKDIR /usr/src/app
+COPY ./requirements.txt ./requirements.txt
+RUN pip install -r requirements.txt
+RUN echo 'export PS1="\[\e[1;36m\]\u@\h\[ls\e[m\]:\[\e[1;34m\]/\W\[\e[m\]$ "' >> /etc/bash.bashrc

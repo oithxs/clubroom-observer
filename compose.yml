@@ -1,3 +1,7 @@
+volumes:
+  shar-data:
+    driver: local
+
 services:
   mac:
     container_name: python-getMac
@@ -5,9 +9,32 @@ services:
       context: ./Mac
       dockerfile: dockerfile
     volumes:
+      - shar-data:/mnt
       - ./Mac:/usr/src/app
     env_file:
       - ./Mac/.env
+    tty: true
+  bot:
+    container_name: python-discordBot
+    build:
+      context: ./Bot
+      dockerfile: dockerfile
+    volumes:
+      - shar-data:/mnt
+      - ./Bot:/usr/src/app
+    env_file:
+      - ./Bot/.env
+    tty: true
+  form:
+    container_name: flask-inputForm
+    build:
+      context: ./Form
+      dockerfile: dockerfile
+    volumes:
+      - shar-data:/mnt
+      - ./Form:/usr/src/app
+    env_file:
+      - ./Form/.env
     tty: true
   selenium:
     container_name: selenium-chrome

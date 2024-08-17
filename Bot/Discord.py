@@ -13,6 +13,10 @@ TOKEN = os.getenv("TOKEN")
 GUILD_ID = int(os.getenv("GUILD_ID"))
 ROLE_ID = int(os.getenv("ROLE_ID"))
 
+ENTER_URL = os.getenv("ENTER_TXT_URL")
+LEAVE_URL = os.getenv("LEAVE_TXT_URL")
+DB_NAME = os.getenv("LOG_DB")
+
 # BotのプレフィックスとIntentsを設定
 intents = discord.Intents.default()
 intents.members = True
@@ -24,11 +28,11 @@ jst = pytz.timezone('Asia/Tokyo')
 
 # ClubRecoder.dbを作成する
 # すでに存在していれば、それにアスセスする。
-dbname = 'ClubRecoder.db'
+# dbname = 'ClubRecoder.db'
 
 #ログの書き込み
 async def db_log_insert(name, status):
-    conn = sqlite3.connect(dbname)
+    conn = sqlite3.connect(DB_NAME)
     # sqliteを操作するカーソルオブジェクトを作成
     cur = conn.cursor()
     now = datetime.datetime.now(jst)
@@ -55,7 +59,7 @@ async def on_ready():
     while True:
         try:
             #入室
-            with open("enter.txt","r+") as f:
+            with open(ENTER_URL,"r+") as f:
                 enter = f.readlines()
                 f.truncate(0) #ファイルサイズを0にする
             for username in enter:
@@ -69,7 +73,7 @@ async def on_ready():
                         await individual.add_roles(role)
             
             #退室
-            with open("leave.txt","r+") as f:
+            with open(LEAVE_URL,"r+") as f:
                 enter = f.readlines()
                 f.truncate(0) #ファイルサイズを0にする
             for username in enter:

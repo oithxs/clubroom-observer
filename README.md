@@ -7,10 +7,11 @@ docker compose build
 ```
 Dockerの起動
 ```
-sh dockUp
+sh dockUp {入りたいコンテナ名[mac,bot,form]の3種類}
 ```
-赤色のBashが起動したら成功
-※Seleniumの追加で起動に5分くらいかかる...
+mac　赤色のbash
+bot　紫色のbash
+form　橙色のbash
 ブラウザから[ローカルの7900](http://localhost:7900/)でseleniumの画面を確認できる[接続]からパスワードは"secret"
 
 実行する時は
