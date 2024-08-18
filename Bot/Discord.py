@@ -89,7 +89,8 @@ async def on_ready():
             
             print("CHECK")
             #time.sleep(60)
-            await asyncio.sleep(60)
+            # 本番環境は60
+            await asyncio.sleep(20)
           
         except Exception as e:
             print(f"error:{e}")

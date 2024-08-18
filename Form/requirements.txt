@@ -1,3 +1,4 @@
 pysqlite3
 python-dotenv
-flask
+Flask
+scapy
