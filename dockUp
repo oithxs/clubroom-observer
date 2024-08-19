@@ -1,2 +1,2 @@
 docker compose up -d
-docker compose exec mac bash
+docker compose exec $1 bash

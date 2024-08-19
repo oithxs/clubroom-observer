@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-DATABASE="USERTABLE.db"
+DATABASE=os.environ["USER_DB"]
 
 def create_DB():
     con=sqlite3.connect(DATABASE)
