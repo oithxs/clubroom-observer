@@ -65,11 +65,11 @@ def result():
     
     DisUsName = request.form["DisUsName"]
     IPAddress = request.remote_addr
-    MACAddress = IPtoMACAddress(IPAddress)
+    MACAddress = IPtoMACAddress(IPAddress).upper()
     
-    print(f"ACCESS FROM >> UserName:{DisUsName} IPAddress:{IPAddress} MACAddress:{MACAddress}")
+    print(f"ACCESS FROM >> UserName:{DisUsName} IPAddress:{IPAddress} MACAddress:{MACAddress.upper()}")
     
-    print(f"結果:{Check_Mac_address(MACAddress)}")
+    print(f"結果:{Check_Mac_address(MACAddress.upper())}")
     
     if(Check_Mac_address(MACAddress)):
         print("Already registered MAC address")
@@ -85,4 +85,4 @@ def result():
 if __name__ == '__main__':
     print("REGISTER_SERVER_RUNNING")
     #app.debug = True
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0",port=5000)
