@@ -4,10 +4,10 @@ from my_module import operate_sqlite3 as sql
 sql.delete_db()
 sql.create_DB()
 
-sql.add_user("CC:E1:D5:79:29:24", "takahashi4510")
-#sql.add_user("0C:9D:92:CD:A1:22", "佐藤さん")
-#sql.add_user("58:56:9F:9F:23:5B", "内藤さん")
-sql.add_user("BC:24:11:32:F4:1E", "鈴木さん")
-sql.add_user("23:FB:32:BD:AD:DA", "小林さん")
+sql.add_user("16:de:ff:76:86:61", "takahashi4510")
+sql.add_user("00:93:37:5D:1C:C2", "._.dice._.")
+sql.add_user("30:03:C8:04:25:F7", "watanabem")
+sql.add_user("A6:26:65:67:64:F4", "yorry2101")
+# sql.add_user("23:FB:32:BD:AD:DA", "小林さん")
 
 sql.list_tables_and_contents()

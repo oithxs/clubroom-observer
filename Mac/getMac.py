@@ -19,10 +19,11 @@ def close_webdriver(driver): # webdriverを終了する
 def get_macaddress(driver): # macアドレスを取得する
     #MACアドレスを取得
     global pre_entering_mac
-    # driver.find_element(By.ID, value="map_wireless").click() # 本番はこっちを使う
-    driver.find_element(By.ID, value="map_wire").click()
+    driver.find_element(By.ID, value="map_wireless").click() # 本番はこっちを使う
+    # driver.find_element(By.ID, value="map_wire").click()
     time.sleep(2)
-    macaddrs = driver.find_elements(by=By.XPATH, value="//*[@id='bodyWireStat']/tr/td[4]")
+    macaddrs = driver.find_elements(by=By.XPATH, value="//*[@id='bodyWlStat']/tr/td[4]")
+    # macaddrs = driver.find_elements(by=By.XPATH, value="//*[@id='bodyWireStat']/tr/td[4]")
 
     now_entering_mac = [elem.text for elem in macaddrs]
     enter_users = [sql.search_user(mac) for mac in list(set(now_entering_mac) - set(pre_entering_mac)) if sql.search_user(mac) is not None]
