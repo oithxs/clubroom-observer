@@ -30,6 +30,8 @@ services:
     build:
       context: ./Form
       dockerfile: dockerfile
+    ports:
+      - 5000:5000
     volumes:
       - shar-data:/mnt
       - ./Form:/usr/src/app
