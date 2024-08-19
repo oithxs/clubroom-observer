@@ -1,3 +1,5 @@
+import sys
+sys.path.append("/usr/src/app")
 from my_module import operate_sqlite3 as sql
 sql.delete_db()
 sql.create_DB()

@@ -1,30 +1,37 @@
 # clubroom-observer
 
-### 開発時に
-クローンした時に
+### クローン後に
 ```
 docker compose build
+sh dockUp bot
+// プロンプトが紫色になれば成功
+sh setup.sh
 ```
-Dockerの起動
+※Linux想定
+Windowsの場合は
 ```
-sh dockUp {入りたいコンテナ名[mac,bot,form]の3種類}
+docker compose build
+docker compose up -d
+docker compose exec bot bash
+// プロンプトが紫色になれば成功
+sh setup.sh
+exit
+// プロンプトが元の色に戻る
 ```
-mac　赤色のbash
-bot　紫色のbash
-form　橙色のbash
-ブラウザから[ローカルの7900](http://localhost:7900/)でseleniumの画面を確認できる[接続]からパスワードは"secret"
-
-実行する時は
+実行前に各コンテナの.envの記述を行う
+### 開発時に
 ```
-sh start.sh
+docker compose bot {コンテナ名}
 ```
-getMac.pyをバックで起動し、Discord.pyをフロントで起動する
-
-### 環境変数を書き込み
-- SELENIUM_URL
-- TABLE_URL
-- TABLE_PASS
-- TOKEN
-- GUILD_ID
-- CHANNEL_ID
-- ROLE_ID
+| コンテナ名 | プロンプトの色 | 使用目的 |
+| ---- | ---- | ---- |
+| mac | 赤 | MACアドレスの取得 |
+| bot | 紫 | DiscordBOTの起動 |
+| form | 橙 | データベースの書き込み |
+###### mac
+[ローカル7900番](http://localhost:7900/)の[接続]からパスワードは"secret"でブラウザの動作を確認
+ユーザーDBの初期化
+```
+python init_db
+```
+###### bot
