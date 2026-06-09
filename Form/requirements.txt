@@ -2,3 +2,4 @@ pysqlite3
 python-dotenv
 Flask
 scapy
+authlib

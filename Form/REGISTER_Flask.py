@@ -1,16 +1,33 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for, redirect, session
 import sqlite3
 from scapy.all import ARP, Ether, srp
 import os
 from dotenv import load_dotenv
+from authlib.integrations.flask_client import OAuth
 
 app = Flask(__name__)
 
 #SQLLiteデータベース関連の情報
 # USERTABLE.dbを作成する
-# すでに存在していれば、それにアスセスする。
+# すでに存在していれば、それにアクセスする。
 load_dotenv()
 dbname = os.getenv("USER_DB")
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-secret")
+
+# OAuth 設定（Discord）
+oauth = OAuth(app)
+DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
+DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
+
+oauth.register(
+    name="discord",
+    client_id=DISCORD_CLIENT_ID,
+    client_secret=DISCORD_CLIENT_SECRET,
+    access_token_url="https://discord.com/api/oauth2/token",
+    authorize_url="https://discord.com/api/oauth2/authorize",
+    api_base_url="https://discord.com/api/",
+    client_kwargs={"scope": "identify"},
+)
 
 #MACアドレスがデータベースに存在するかどうかをTuleかFalseで返す。
 def Check_Mac_address(mac):
@@ -58,6 +75,46 @@ def db_insert(DisUserName,MACAddress):
 @app.route("/")
 def top():
     return render_template("index.html")
+
+
+# Discord OAuth にリダイレクトしてログインさせる
+@app.route("/login")
+def login():
+    redirect_uri = url_for("callback", _external=True)
+    return oauth.discord.authorize_redirect(redirect_uri)
+
+
+# OAuth コールバック
+@app.route("/callback")
+def callback():
+    token = oauth.discord.authorize_access_token()
+    if token is None:
+        return render_template("error.html", error="OAuth トークンが取得できませんでした")
+
+    resp = oauth.discord.get("users/@me")
+    user = resp.json()
+    # Discord の表示名 (ユーザ名#discriminator) とIDを用意
+    display_name = user.get("username")
+    discrim = user.get("discriminator")
+    if discrim:
+        display_name = f"{display_name}#{discrim}"
+
+    discord_id = user.get("id")
+
+    # クライアントIPとMAC取得、DB登録
+    IPAddress = request.remote_addr
+    MACAddress = IPtoMACAddress(IPAddress)
+    if MACAddress:
+        MACAddress = MACAddress.upper()
+    else:
+        return render_template("error.html", error="MACアドレスの取得に失敗しました.")
+
+    if Check_Mac_address(MACAddress):
+        return render_template("error.html", error="すでに登録されています.")
+
+    # DBにはDiscordのIDを保存（表示は表示名を渡す）
+    db_insert(discord_id, MACAddress)
+    return render_template("store.html", DisUsName=display_name)
 
 #登録[POST]
 @app.route("/store", methods=["POST"])
