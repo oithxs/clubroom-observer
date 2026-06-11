@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, url_for, redirect, session
+from flask import Flask, request, render_template, url_for
 import sqlite3
 from scapy.all import ARP, Ether, srp
 import os
@@ -61,11 +61,11 @@ def IPtoMACAddress(IPAddress):
     return None
 
 #書き込み
-def db_insert(DisUserName,MACAddress):
+def db_insert(DiscordUserID,MACAddress):
     conn = sqlite3.connect(dbname)
     # sqliteを操作するカーソルオブジェクトを作成
     cur = conn.cursor()
-    cur.execute("INSERT INTO userdata(MAC_ADDRESS,discord_user_ID) values(?, ?);", (MACAddress,DisUserName))
+    cur.execute("INSERT INTO userdata(MAC_ADDRESS,discord_user_ID) values(?, ?);", (MACAddress,DiscordUserID))
     # データベースへコミット。これで変更が反映される。
     conn.commit()
     # データベースへのコネクションを閉じる。(必須)
@@ -115,29 +115,6 @@ def callback():
     # DBにはDiscordのIDを保存（表示は表示名を渡す）
     db_insert(discord_id, MACAddress)
     return render_template("store.html", DisUsName=display_name)
-
-#登録[POST]
-@app.route("/store", methods=["POST"])
-def result():
-    
-    DisUsName = request.form["DisUsName"]
-    IPAddress = request.remote_addr
-    MACAddress = IPtoMACAddress(IPAddress).upper()
-    
-    print(f"ACCESS FROM >> UserName:{DisUsName} IPAddress:{IPAddress} MACAddress:{MACAddress.upper()}")
-    
-    print(f"結果:{Check_Mac_address(MACAddress.upper())}")
-    
-    if(Check_Mac_address(MACAddress)):
-        print("Already registered MAC address")
-        return render_template("error.html",error="すでに登録されています.")
-    elif(MACAddress==None):
-        print("Failed to obtain MAC address")
-        return render_template("error.html",error="MACアドレスの取得に失敗しました.")
-    else:
-        db_insert(DisUsName,MACAddress) #データベースへ登録
-        print("REGISTER OK")
-        return render_template("store.html",DisUsName=DisUsName)
 
 if __name__ == '__main__':
     print("REGISTER_SERVER_RUNNING")
